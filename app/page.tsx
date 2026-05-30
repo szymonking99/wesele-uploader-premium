@@ -17,7 +17,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!files || files.length === 0) {
-      setStatusMessage("Wybierz przynajmniej jedno zdjęcie.");
+      setStatusMessage("Prosimy wybrać przynajmniej jedno zdjęcie przed wysyłką.");
       return;
     }
 
@@ -34,7 +34,7 @@ export default function Home() {
           body: JSON.stringify({ filename: file.name, contentType: file.type }),
         });
 
-        if (!res.ok) throw new Error("Błąd konfiguracji serwera.");
+        if (!res.ok) throw new Error("Problem z konfiguracją serwera.");
 
         const { uploadUrl } = await res.json();
 
@@ -47,125 +47,107 @@ export default function Home() {
           body: file,
         });
 
-        if (!uploadRes.ok) throw new Error("Błąd podczas przesyłania pliku.");
+        if (!uploadRes.ok) throw new Error("Błąd podczas wysyłania pliku.");
       }
 
       setUploadSuccess(true);
     } catch (error) {
       console.error(error);
-      setStatusMessage("Wystąpił błąd połączenia. Spróbuj ponownie.");
+      setStatusMessage("Nie udało się przesłać zdjęć. Spróbuj ponownie za chwilę.");
     } finally {
       setUploading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-[#FDFDFD] bg-gradient-to-tr from-[#F4F7F5] via-[#FFFFFF] to-[#F9FAF9] flex items-center justify-center p-4 relative overflow-hidden font-sans">
-      {/* Bardzo delikatne, ciepłe złote i zielone blaski rozświetlające jasne tło */}
-      <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#D4AF37]/5 blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#123520]/5 blur-[130px] pointer-events-none" />
-
-      {/* Główna karta - czysta biel, luksusowy cień i delikatna złota obwódka */}
-      <div className="w-full max-w-xl bg-white border border-[#D4AF37]/30 rounded-2xl p-8 md:p-12 shadow-[0_15px_40px_rgba(18,53,32,0.06)] text-center relative">
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "20px" }}>
+      {/* Centralna karta - styl luksusowej papeterii weselnej */}
+      <div className="wedding-card" style={{ width: "100%", maxWidth: "460px", padding: "40px 30px", textAlign: "center", boxSizing: "border-box" }}>
         
-        {/* Górny akcent z butelkowej zieleni i złota */}
-        <div className="flex justify-center items-center gap-2 mb-6">
-          <div className="w-8 h-[1px] bg-[#D4AF37]" />
-          <div className="w-2 h-2 rounded-full bg-[#123520]" />
-          <div className="w-8 h-[1px] bg-[#D4AF37]" />
+        {/* Górny ozdobny detal */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+          <div style={{ width: "40px", height: "1px", backgroundColor: "rgba(212, 175, 55, 0.6)" }} />
+          <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#123520" }} />
+          <div style={{ width: "40px", height: "1px", backgroundColor: "rgba(212, 175, 55, 0.6)" }} />
         </div>
 
-        {/* Imiona Pary Młodej w kolorze głębokiej butelkowej zieleni ze złotym blaskiem */}
-        <h1 className="text-4xl md:text-5xl font-serif tracking-wide text-[#123520] font-light mb-3">
+        {/* Nagłówek z imionami */}
+        <h1 className="wedding-title" style={{ fontSize: "36px", margin: "0 0 8px 0", letterSpacing: "0.02em" }}>
           Paulina & Szymon
         </h1>
         
-        {/* Złota data */}
-        <p className="text-[#AA7C11] tracking-widest text-xs uppercase font-semibold mb-8">
+        {/* Złota szlachetna data */}
+        <p style={{ color: "#AA7C11", letterSpacing: "0.2em", fontSize: "12px", uppercase: "true", fontWeight: "600", margin: "0 0 32px 0" }}>
           06.06.2026
         </p>
 
         {!uploadSuccess ? (
           <>
-            <p className="text-[#2C3E35] text-lg font-light leading-relaxed mb-2">
+            <p style={{ color: "#2C3E35", fontSize: "16px", fontWeight: "300", lineHeight: "1.6", margin: "0 0 4px 0" }}>
               Będziemy bardzo wdzięczni za przesłanie zdjęć z naszego wesela!
             </p>
-            <p className="text-[#123520]/60 text-sm font-light mb-10">
+            <p style={{ color: "rgba(18, 53, 32, 0.6)", fontSize: "12px", fontWeight: "300", letterSpacing: "0.05em", margin: "0 0 40px 0" }}>
               Zdjęcia trafiają prosto do nas!
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Ekskluzywna strefa wyboru plików - jasne tło z zielono-złotym hoverem */}
-              <div className="relative group">
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              {/* Ekskluzywne pole wyboru plików */}
+              <div style={{ position: "relative", width: "100%" }}>
                 <input
                   type="file"
                   multiple
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0, cursor: "pointer", zIndex: 10 }}
                   id="file-upload"
                 />
                 <label
                   htmlFor="file-upload"
-                  className="flex flex-col items-center justify-center w-full px-6 py-10 border border-dashed border-[#123520]/20 rounded-xl bg-[#FBFDFB] group-hover:bg-[#123520]/5 group-hover:border-[#D4AF37] transition-all duration-300 cursor-pointer"
+                  className="wedding-upload-area"
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "35px 20px", borderRadius: "12px", cursor: "pointer", boxSizing: "border-box" }}
                 >
-                  {/* Ikona aparatu w kolorze butelkowej zieleni */}
-                  <svg className="w-10 h-10 text-[#123520]/80 mb-3 group-hover:scale-110 group-hover:text-[#AA7C11] transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {/* Ikona aparatu */}
+                  <svg style={{ width: "40px", height: "40px", color: "rgba(18, 53, 32, 0.7)", marginBottom: "12px" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     <circle cx="12" cy="13" r="3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
                   </svg>
-                  <span className="text-[#123520] text-sm font-medium tracking-wide">
-                    {files && files.length > 0 ? `Wybrano pamiątek: ${files.length}` : "Wybierz zdjęcia z telefonu lub komputera"}
+                  
+                  <span style={{ color: "#123520", fontSize: "14px", fontWeight: "500", letterSpacing: "0.02em" }}>
+                    {files && files.length > 0 ? `Wybrano pamiątek: ${files.length}` : "Wybierz zdjęcia z telefonu"}
                   </span>
-                  {files && files.length > 0 && (
-                    <span className="text-[#123520]/60 text-xs mt-2 max-w-[300px] truncate px-4">
-                      {Array.from(files).map(f => f.name).join(", ")}
-                    </span>
-                  )}
                 </label>
               </div>
 
-              {/* Przycisk wysyłania - tło z butelkowej zieleni ze złotym tekstem/cieniami */}
+              {/* Główny przycisk premium */}
               <button
                 type="submit"
                 disabled={uploading}
-                className="w-full relative bg-[#123520] hover:bg-[#1a462b] text-white font-medium tracking-wider text-sm uppercase py-4 px-6 rounded-xl shadow-[0_4px_15px_rgba(18,53,32,0.15)] hover:shadow-[0_6px_20px_rgba(18,53,32,0.25)] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 transform active:scale-[0.99] border border-[#D4AF37]/30"
+                className="wedding-btn"
+                style={{ width: "100%", border: "1px solid rgba(212, 175, 55, 0.2)", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.15em", fontWeight: "500", padding: "16px 20px", borderRadius: "12px", cursor: "pointer", boxShadow: "0 4px 15px rgba(18, 53, 32, 0.1)", opacity: uploading ? 0.5 : 1 }}
               >
-                {uploading ? (
-                  <span className="flex items-center justify-center gap-2 text-[#F3E5AB]">
-                    <svg className="animate-spin h-5 w-5 text-[#F3E5AB]" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Trwa przesyłanie zdjęć...
-                  </span>
-                ) : (
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF] via-[#F3E5AB] to-[#FFF]">
-                    Wyślij zdjęcia
-                  </span>
-                )}
+                {uploading ? "Trwa zapisywanie wspomnień..." : "Wyślij zdjęcia"}
               </button>
             </form>
 
             {statusMessage && (
-              <p className="mt-4 text-xs font-light text-rose-700 bg-rose-50 border border-rose-200 py-2 px-4 rounded-lg">
+              <p style={{ marginTop: "16px", fontSize: "12px", color: "#991b1b", backgroundColor: "#fef2f2", border: "1px solid #fee2e2", padding: "10px", borderRadius: "10px" }}>
                 {statusMessage}
               </p>
             )}
           </>
         ) : (
-          /* Jasny, elegancki ekran podziękowania */
-          <div className="py-6 space-y-4">
-            <div className="w-16 h-16 mx-auto bg-[#123520]/5 rounded-full flex items-center justify-center border border-[#D4AF37]/40">
-              <svg className="w-8 h-8 text-[#AA7C11]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
+          /* Ekran sukcesu */
+          <div style={{ padding: "30px 0" }}>
+            <div style={{ width: "56px", height: "56px", margin: "0 auto 16px auto", backgroundColor: "rgba(18, 53, 32, 0.05)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(212, 175, 55, 0.5)" }}>
+              <span style={{ fontSize: "20px" }}>❤️</span>
             </div>
-            <h2 className="text-2xl font-serif text-[#123520] font-normal">
+            
+            <h2 className="wedding-title" style={{ fontSize: "24px", margin: "0 0 8px 0" }}>
               Dziękujemy za przesłane zdjęcia!
             </h2>
-            <p className="text-[#2C3E35] font-light text-base tracking-wide">
-              Pozdrawiamy serdecznie <span className="text-[#AA7C11]">❤️</span>
+            
+            <p style={{ color: "#2C3E35", fontSize: "16px", fontWeight: "300", margin: "0 0 24px 0" }}>
+              Pozdrawiamy serdecznie <span style={{ color: "#AA7C11" }}>❤️</span>
             </p>
             
             <button
@@ -174,20 +156,21 @@ export default function Home() {
                 setFiles(null);
                 setStatusMessage("");
               }}
-              className="mt-8 inline-block text-xs text-[#AA7C11] hover:text-[#123520] underline tracking-widest uppercase transition-colors font-medium"
+              style={{ background: "none", border: "none", color: "#AA7C11", fontSize: "10px", fontWeight: "600", letterSpacing: "0.2em", textTransform: "uppercase", textDecoration: "underline", cursor: "pointer" }}
             >
-              Prześlij kolejne zdjęcia
+              Dodaj kolejne zdjęcia
             </button>
           </div>
         )}
 
-        {/* Dolny ozdobny akcent */}
-        <div className="flex justify-center items-center gap-2 mt-8">
-          <div className="w-8 h-[1px] bg-[#D4AF37]" />
-          <div className="w-2 h-2 rounded-full bg-[#123520]" />
-          <div className="w-8 h-[1px] bg-[#D4AF37]" />
+        {/* Dolny ozdobny detal */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginTop: "32px" }}>
+          <div style={{ width: "40px", height: "1px", backgroundColor: "rgba(212, 175, 55, 0.6)" }} />
+          <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#123520" }} />
+          <div style={{ width: "40px", height: "1px", backgroundColor: "rgba(212, 175, 55, 0.6)" }} />
         </div>
+
       </div>
-    </main>
+    </div>
   );
 }
