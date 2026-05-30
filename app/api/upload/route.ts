@@ -1,3 +1,11 @@
+console.log("ENV CHECK:", {
+  account: process.env.AZURE_STORAGE_ACCOUNT_NAME,
+  container: process.env.AZURE_STORAGE_CONTAINER_NAME,
+  token: process.env.AZURE_STORAGE_SAS_TOKEN?.slice(0, 20) + "...",
+});
+
+
+
 import { NextResponse } from "next/server";
 import { StorageSharedKeyCredential, generateBlobSASQueryParameters, BlobSASPermissions } from "@azure/storage-blob";
 import path from "path";
