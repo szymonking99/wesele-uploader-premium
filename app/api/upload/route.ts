@@ -53,19 +53,22 @@ export async function POST(req: Request) {
     const blobName = `${prefix}${date}${uploaderPart}-${timestamp}-${safeName}`;
 
     // Generowanie uwierzytelnienia Azure SAS Token
-    const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
-    const permissions = BlobSASPermissions.parse("cw"); // c = create, w = write
-    const expiresOn = new Date(Date.now() + 1000 * 60 * 15); // Token ważny przez 15 minut
+       const expiresOn = new Date(Date.now() + 1000 * 60 * 15); // Token ważny przez 15 minut
+const now = new Date();
+const startsOn = new Date(now.getTime() - 1000 * 60 * 15); // Ważny od 15 minut temu (na błędy stref czasowych)
+const expiresOn = new Date(now.getTime() + 1000 * 60 * 60); // Ważny przez godzinę w przód
 
-    const sasToken = generateBlobSASQueryParameters(
-      {
-        containerName,
-        blobName,
-        permissions,
-        expiresOn
-      },
-      sharedKeyCredential
-    ).toString();
+const sasToken = generateBlobSASQueryParameters(
+  {
+    containerName,
+    blobName,
+    permissions,
+    startsOn, // DODAJ TO POLE
+    expiresOn
+  },
+  sharedKeyCredential
+).toString();
+    
 
     // Budowanie adresów URL do uploadu
     const blobUrl = `https://${account}.blob.core.windows.net/${containerName}/${encodeURIComponent(blobName)}`;
