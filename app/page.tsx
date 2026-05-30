@@ -76,8 +76,8 @@ export default function Home() {
           Paulina & Szymon
         </h1>
         
-        {/* Złota szlachetna data */}
-        <p style={{ color: "#AA7C11", letterSpacing: "0.2em", fontSize: "12px", uppercase: "true", fontWeight: "600", margin: "0 0 32px 0" }}>
+        {/* Złota szlachetna data - TUTAJ POPRAWIONE */}
+        <p style={{ color: "#AA7C11", letterSpacing: "0.2em", fontSize: "12px", textTransform: "uppercase", fontWeight: "600", margin: "0 0 32px 0" }}>
           06.06.2026
         </p>
 
